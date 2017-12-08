@@ -5,6 +5,7 @@ var setupSimilar = document.querySelector('.setup-similar');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 var setupSimilarList = document.querySelector('.setup-similar-list');
 
+
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = setup.querySelector('.setup-close');
 var setupSubmit = setup.querySelector('.setup-submit');
@@ -53,6 +54,7 @@ var fireballsColors = [
   '#e848d5',
   '#e6e848'
 ];
+
 
 var getRandom = function (startIndex, endIndex) {
   return Math.floor(startIndex + Math.random() * (endIndex - startIndex + 1));

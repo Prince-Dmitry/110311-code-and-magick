@@ -94,19 +94,7 @@ setupSimilarList.appendChild(collectWizards(wizards, renderWizard));
 setupSimilar.classList.remove('hidden');
 
 
-var onPopupEscPress = function (event) {
-  if (event.keyCode === ESC_KEYCODE) {
-    if (document.activeElement !== setupUserName) {
-      closePopup();
-    }
-  }
-};
-
-var onPopupEnterPress = function (event) {
-  if (event.keyCode === ENTER_KEYCODE) {
-    closePopup();
-  }
-};
+// Открытие/закрытие выбора параметров мага
 
 var openPopup = function () {
   setup.classList.remove('hidden');
@@ -114,9 +102,14 @@ var openPopup = function () {
 };
 
 var closePopup = function () {
-  event.preventDefault();
   setup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var onPopupEscPress = function (event) {
+  if (event.keyCode === ESC_KEYCODE && setupUserName.validity.valid) {
+    closePopup();
+  }
 };
 
 setupOpen.addEventListener('click', function () {
@@ -129,35 +122,80 @@ setupOpen.addEventListener('keydown', function (event) {
   }
 });
 
+
+// Валидация при нажатии на "Сохранить". С выводом сообщения на русском.
+
+setupSubmit.addEventListener('click', function () {
+  if (setupUserName.validity.valid) {
+    closePopup();
+  }
+});
+
+setupSubmit.addEventListener('keydown', function (event) {
+  if (event.keyCode === ENTER_KEYCODE && setupUserName.validity.valid) {
+    closePopup();
+  }
+});
+
+setupUserName.addEventListener('keydown', function (event) {
+  event.stopPropagation();
+}, true);
+
+setupUserName.addEventListener('invalid', function () {
+  if (!setupUserName.validity.valid) {
+    if (setupUserName.validity.tooShort) {
+      setupUserName.setCustomValidity('имя персонажа не может содержать менее 2 символов');
+    }
+    if (setupUserName.validity.tooLong) {
+      setupUserName.setCustomValidity('максимальная длина имени персонажа — 25 символов');
+    }
+    if (setupUserName.validity.valueMissing) {
+      setupUserName.setCustomValidity('это поле должно быть заполненным');
+    }
+  } else {
+    setupUserName.setCustomValiditiy('');
+  }
+});
+
+setupUserName.addEventListener('input', function (event) {
+  var target = event.target;
+
+  if (target.value.length < 2) {
+    target.setCustomValidity('имя персонажа не может содержать менее 2 символов');
+  } else {
+    target.setCustomValidity('');
+  }
+});
+
 setupClose.addEventListener('click', function () {
   closePopup();
 });
 
-setupClose.addEventListener('keydown', onPopupEnterPress);
-
-setupSubmit.addEventListener('click', function () {
-  closePopup();
+setupClose.addEventListener('keydown', function (event) {
+  if (event.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
 });
 
-setupSubmit.addEventListener('keydown', onPopupEnterPress);
+// Выбор параметров плаща, глаз, шарика огня волшебника методом тыка
 
-
-var wizardCoat = setup.querySelector('.wizard-coat');
-var wizardEyes = setup.querySelector('.wizard-eyes');
+var wizardSetup = setup.querySelector('.setup-wizard');
+var wizardCoat = wizardSetup.querySelector('.wizard-coat');
+var wizardEyes = wizardSetup.querySelector('.wizard-eyes');
 var setupFireball = setup.querySelector('.setup-fireball-wrap');
 
-var index = 1;
+var colorChanger = function (event) {
+  var currentStyle = event.currentTarget.style;
 
-wizardCoat.addEventListener('click', function (event) {
-  event.target.style.fill = COAT_COLOR[index];
+  if (event.currentTarget === wizardCoat) {
+    currentStyle.fill = COAT_COLOR[getRandom(0, COAT_COLOR.length - 1)];
+  } else if (event.currentTarget === wizardEyes) {
+    currentStyle.fill = EYES_COLOR[getRandom(0, EYES_COLOR.length - 1)];
+  } else if (event.currentTarget === setupFireball) {
+    currentStyle.backgroundColor = FIREBALLS_COLORS[getRandom(0, FIREBALLS_COLORS.length - 1)];
+  }
+};
 
-  index = index < COAT_COLOR.length - 1 ? ++index : 0;
-});
-
-wizardEyes.addEventListener('click', function (event) {
-  event.target.style.fill = EYES_COLOR[getRandom(0, EYES_COLOR.length)];
-});
-
-setupFireball.addEventListener('click', function (event) {
-  event.target.parentNode.style.background = FIREBALLS_COLORS[getRandom(0, FIREBALLS_COLORS.length)];
-});
+wizardCoat.addEventListener('click', colorChanger);
+wizardEyes.addEventListener('click', colorChanger);
+setupFireball.addEventListener('click', colorChanger);

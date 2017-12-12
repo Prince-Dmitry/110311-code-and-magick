@@ -13,7 +13,7 @@ var setupUserName = setup.querySelector('.setup-user-name');
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
-var firstName = [
+var FIRST_NAME = [
   'Иван',
   'Хуан Себастьян',
   'Мария', 'Кристоф',
@@ -22,7 +22,7 @@ var firstName = [
   'Люпита',
   'Вашингтон'];
 
-var lastName = [
+var LAST_NAME = [
   'да Марья',
   'Верон',
   'Мирабелла',
@@ -32,7 +32,7 @@ var lastName = [
   'Нионго',
   'Ирвинг'];
 
-var coatColor = [
+var COAT_COLOR = [
   'rgb(101, 137, 164)',
   'rgb(241, 43, 107)',
   'rgb(146, 100, 161)',
@@ -40,14 +40,14 @@ var coatColor = [
   'rgb(215, 210, 55)',
   'rgb(0, 0, 0)'];
 
-var eyesColor = [
+var EYES_COLOR = [
   'black',
   'red',
   'blue',
   'yellow',
   'green'];
 
-var fireballsColors = [
+var FIREBALLS_COLORS = [
   '#ee4830',
   '#30a8ee',
   '#5ce6c0',
@@ -64,9 +64,9 @@ var getRandomWizzard = function (n) {
   var arr = [];
   for (var i = 0; i < n; i++) {
     arr[i] = {
-      name: firstName[getRandom(0, firstName.length - 1)] + ' ' + lastName[getRandom(0, lastName.length - 1)],
-      coatColor: coatColor[getRandom(0, coatColor.length - 1)],
-      eyesColor: eyesColor[getRandom(0, eyesColor.length - 1)]
+      name: FIRST_NAME[getRandom(0, FIRST_NAME.length - 1)] + ' ' + LAST_NAME[getRandom(0, LAST_NAME.length - 1)],
+      coatColor: COAT_COLOR[getRandom(0, COAT_COLOR.length - 1)],
+      eyesColor: EYES_COLOR[getRandom(0, EYES_COLOR.length - 1)]
     };
   }
   return arr;
@@ -149,15 +149,15 @@ var setupFireball = setup.querySelector('.setup-fireball-wrap');
 var index = 1;
 
 wizardCoat.addEventListener('click', function (event) {
-  event.target.style.fill = coatColor[index];
+  event.target.style.fill = COAT_COLOR[index];
 
-  index = index < coatColor.length - 1 ? ++index : 0;
+  index = index < COAT_COLOR.length - 1 ? ++index : 0;
 });
 
 wizardEyes.addEventListener('click', function (event) {
-  event.target.style.fill = eyesColor[getRandom(0, eyesColor.length)];
+  event.target.style.fill = EYES_COLOR[getRandom(0, EYES_COLOR.length)];
 });
 
 setupFireball.addEventListener('click', function (event) {
-  event.target.parentNode.style.background = fireballsColors[getRandom(0, fireballsColors.length)];
+  event.target.parentNode.style.background = FIREBALLS_COLORS[getRandom(0, FIREBALLS_COLORS.length)];
 });

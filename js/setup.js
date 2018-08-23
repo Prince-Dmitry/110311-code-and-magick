@@ -93,7 +93,6 @@ var wizards = getRandomWizzard(4);
 setupSimilarList.appendChild(collectWizards(wizards, renderWizard));
 setupSimilar.classList.remove('hidden');
 
-
 // Открытие/закрытие выбора параметров мага
 
 var openPopup = function () {
